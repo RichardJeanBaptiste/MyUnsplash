@@ -1,14 +1,16 @@
 import { React, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-
+import '../App.css'
 
 function ImageCard(props) {
 
     const [showOverlay, setShowOverlay] = useState(false)
 
     const [imageStyle] = useState({
-        marginBottom: '7%',
+        position: 'absolute',
+        top: props.imgTop,
+        left: props.imgLeft,
         width: props.imgWidth,
         height: props.imgHeight,
         borderRadius: '16px',
@@ -16,7 +18,9 @@ function ImageCard(props) {
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
     })
-
+    
+    
+   
     const [buttonStyle] = useState({
         fontFamily: 'Montserrat',
         fontSize: '15px',
@@ -56,20 +60,19 @@ function ImageCard(props) {
             height: props.imgHeight,
         }
 
-        
-
         return show;
     }
     
-
+    
     return (
+
         
         <Card style={imageStyle} onMouseOver={() => setShowOverlay(true)} onMouseLeave={() => setShowOverlay(false)}>
             <Card.ImgOverlay>
                 <div style={overlayStyle()} >
-                    <Button style={buttonStyle} variant="outline-danger">delete</Button>
+                    <Button style={buttonStyle} variant="outline-danger" onClick={props.removeImageHandler}>delete</Button>
                     <Card.Text style={cardText}>
-                        Morbi consequat lectus non orci maximus
+                        {props.label}
                     </Card.Text>
                 </div>
             </Card.ImgOverlay>

@@ -1,20 +1,67 @@
+/**
+   *    TODO
+   * 
+   *     Form start icon
+   *     Fonts
+   *     
+   */
+
+
 import './App.css';
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import logo from './images/my_unsplash_logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { alertHeading, alertStyle, alertButtons, formStyle, formInputStyle } from './AppStyles';
 import ImageCard from './components/ImageCard';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form'
-import beach from './images/beach.jpg';
-import bee from './images/bee.jpg';
-import dev from './images/dev.jpg';
-import kid from './images/kid.jpg';
-import path from './images/path.jpg';
+
 
 function App(props) {
 
   const [show, setShow] = useState(false);
+
+  const [imageList, setImageList] = useState(null);
+
+  const [reload, setReload] = useState(false);
+
+  useEffect(() => {
+    fetch('/images')
+    .then(response => response.json())
+    .then(data => {
+      setImageList(data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+  },[])
+
+  useEffect(() => {
+    if(reload === true){
+      fetch('/images')
+      .then(response => response.json())
+      .then(data => {
+        setImageList(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+      setReload(false)
+    }
+
+  },[imageList, reload, setReload])
+
+
+  function removeImage(id) {
+    fetch(`/images/remove/${id}`, {
+        method: 'POST',
+    })
+
+    setReload(true)
+  }  
+ 
 
   const appStyle = () => {
 
@@ -32,48 +79,38 @@ function App(props) {
     return opac;
   }
 
-  let alertStyle = {
-    position: 'absolute',
-    width: '40%',
-    height: '60%',
-    opacity: 1,
-    borderRadius: '12px',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    zIndex: '1',
-    backgroundColor: 'white',
-  }
+  const ImageContainer = () => {
+    if(imageList === null){
+      return (
+        <div></div>
+      )
+    }else{
 
-  const alertHeading = {
-    position: 'absolute',
-    left: '5%',
-    top: '10%',
-  }
+      let count = 0;
+      let x = imageList.map((data) => {
+        count++;
+        if(count === 1){
+          
+          return (<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='20%'/>)
+        }else if(count === 2){
+          return (<ImageCard ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='65%'/>)
+        }else if(count === 3){
+          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='110%'/>)
+        }else if(count === 4){
+          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='30em' imgTop='20%' imgLeft='38%'/>)
+        }else if(count === 5){
+          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='13em'  imgTop='113%' imgLeft='38%'/>)
+        }else if(count === 6){
+          return(<ImageCard ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='16em' imgTop='20%' imgLeft='75%'/>)
+        }else if(count === 7){
+          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='27em' imgTop='70%' imgLeft='75%'/>)
+        }
+        return <></>
+      })
 
-  const alertButtons = {
-    position: 'absolute',
-    bottom: '4%',
-    right: '7%',
+      return(x)
+    }
   }
-
-  const formStyle = {
-    position: 'absolute',
-    top: '30%',
-  }
-
-  const formInputStyle = {
-    width: '30.5em',
-    borderRadius: '12px',
-  }
-
-  /**
-   *    TODO
-   * 
-   *     Form start icon
-   *     Fonts
-   *     
-   */
 
   return (
     <div className="App">
@@ -103,8 +140,7 @@ function App(props) {
                     Submit
                 </Button>
               </div>
-            </Alert>
-
+          </Alert>
         <div className='container' style={appStyle()}>
             <div className="AppBar">
                 <img  className="AppLogo" src={logo} alt='unsplash logo' width='14%' height='9%'/>
@@ -112,38 +148,14 @@ function App(props) {
                 <button className="AddButton" onClick={() => setShow(true)}>Add a photo</button>
             </div>
 
-            <div className="imageContainer">
-
-                <div className="imageColumn">
-                    <ImageCard ImageUrl={beach} imgWidth='18em' imgHeight='14em'/>
-                    <ImageCard ImageUrl={bee} imgWidth='18em' imgHeight='14em'/>
-                    <ImageCard ImageUrl={dev} imgWidth='18em' imgHeight='14em'/>   
-                </div>
-
-                <div className="imageColumn" style={{marginLeft: '5%'}}>
-                    <ImageCard ImageUrl={bee} imgWidth='18em' imgHeight='30em'/>
-                    <ImageCard ImageUrl={kid} imgWidth='18em' imgHeight='13em'/>
-                </div>
-
-                <div className="imageColumn" style={{marginLeft: '5%'}}>
-                    <ImageCard ImageUrl={path} imgWidth='18em' imgHeight='16em'/>
-                    <ImageCard ImageUrl={bee} imgWidth='18em' imgHeight='27em'/>
-                </div>
-                
-
-            </div>
-        </div>
+           <div className="imageContainer">
+              <ImageContainer/>
+           </div>
+            
+          </div>
+            
     </div>
   );
 }
 
 export default App;
-
-
-/*
-
-
-
-
-
-*/
