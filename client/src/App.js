@@ -37,7 +37,7 @@ function App(props) {
       setImageList(data.reverse())
     })
     .catch((err) => {
-      console.log(err)
+      console.log(JSON.stringify(err))
     })
 
   },[])
