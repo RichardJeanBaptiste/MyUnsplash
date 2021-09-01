@@ -38,12 +38,11 @@ function App(props) {
       },
     })
     .then((response) => {
-      console.log('def')
       console.log(response)
+      console.log(JSON.stringify(response))
       return JSON.stringify(response)
     })
     .then(data => {
-      console.log('abc')
       data = Array.from(data)
       setImageList(data.reverse())
     })
