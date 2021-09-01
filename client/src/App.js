@@ -32,8 +32,12 @@ function App(props) {
 
   useEffect(() => {
     fetch('https://richinbkunsplash.herokuapp.com/images')
-    .then(response => response.json())
+    .then((response) => {
+      //console.log(response)
+      return response.json()
+    })
     .then(data => {
+      console.log(data)
       setImageList(data.reverse())
     })
 
@@ -41,7 +45,7 @@ function App(props) {
 
   useEffect(() => {
     if(reload === true){
-      fetch('/images')
+      fetch('https://richinbkunsplash.herokuapp.com/images')
       .then(response => response.json())
       .then(data => {
         setImageList(data.reverse())
@@ -80,7 +84,7 @@ function App(props) {
   }
 
   function removeImage(id) {
-    fetch(`/images/remove/${id}`, {
+    fetch(`https://richinbkunsplash.herokuapp.com/images/remove/${id}`, {
         method: 'POST',
     })
 
@@ -89,7 +93,7 @@ function App(props) {
 
   function addImage(){
     const data = { name: label, link: linkToSend}
-    fetch(`/images/add`, {
+    fetch(`https://richinbkunsplash.herokuapp.com/images/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
