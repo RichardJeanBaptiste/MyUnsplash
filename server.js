@@ -34,7 +34,7 @@ app.get('/images', async (req,res) => {
     try {
         
         console.log("--- IMages route----")
-        await Image.find({}, function(err, docs){
+        Image.find({}, function(err, docs){
             if (err) res.send(err)
             console.log(docs)
             res.json(docs)

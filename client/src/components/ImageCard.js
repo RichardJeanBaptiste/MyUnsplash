@@ -21,14 +21,6 @@ function ImageCard(props) {
     })
     */
 
-    function checkUrl() {
-        if(props.ImageUrl === '' || props.ImageUrl === undefined){
-            return ""
-        }else{
-            return props.ImgUrl 
-        }
-    }
-    
     const imageStyle = {
         position: 'absolute',
         top: props.imgTop,
@@ -36,7 +28,7 @@ function ImageCard(props) {
         width: props.imgWidth,
         height: props.imgHeight,
         borderRadius: '16px',
-        backgroundImage: `url(${checkUrl()})`,
+        backgroundImage: `url(${props.ImageUrl})`,
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
     }

@@ -24,6 +24,8 @@ function App(props) {
 
   const [imageList, setImageList] = useState(null);
 
+  const [ready, setReady] = useState(false);
+
   const [label, setLabel] = useState("");
 
   const [linkToSend, setLinkToSend] = useState("");
@@ -39,6 +41,7 @@ function App(props) {
     .then(data => {
       console.log(data)
       setImageList(data.reverse())
+      setReady(true);
     })
 
   },[])
@@ -46,15 +49,15 @@ function App(props) {
   useEffect(() => {
     if(reload === true){
       fetch('https://richinbkunsplash.herokuapp.com/images')
-      .then(response => JSON.stringify(response))
-      .then(data => {
-        data = Array.from(data)
-        setImageList(data.reverse())
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-      setReload(false)
+    .then((response) => {
+      //console.log(response.json())
+      return response.json()
+    })
+    .then(data => {
+      console.log(data)
+      setImageList(data.reverse())
+      setReady(true);
+    })
     }
 
   },[imageList, reload, setReload])
@@ -109,9 +112,10 @@ function App(props) {
   const ImageContainer = () => {
     if(imageList === null){
       return (
-        <div></div>
+        <>
+        </>
       )
-    }else{
+    }else if(ready === true){
 
       let count = 0;
       let x = imageList.map((data, i) => {
@@ -138,6 +142,8 @@ function App(props) {
 
       return(x)
     }
+
+    return <></>
   }
 
   return (
