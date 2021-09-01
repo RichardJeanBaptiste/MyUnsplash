@@ -32,10 +32,11 @@ app.get('/hello', (req, res) => {
 
 app.get('/images', (req,res) => {
     try {
+        console.log("--- IMages route----")
         Image.find({}, function(err, docs){
             if (err) res.send(err)
             console.log(docs)
-            res.send(docs)
+            res.json(docs)
         })
     } catch (error) {
         console.log(error)
