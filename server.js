@@ -4,7 +4,7 @@ const path = require('path')
 const mongoose = require('mongoose')
 const { Image } = require('./images.models')
 const app = express()
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 
 app.use(cors())
 app.use(express.json())
@@ -43,21 +43,34 @@ app.get('/images', (req,res) => {
 
 app.post('/images/add', (req,res) => {
 
-    Image.create({ name: req.body.name, link: req.body.link }, function (err) {
-        if (err) return handleError(err);
-        // saved!
-    });
-    //console.log(req.body.name)
-    //console.log(req.body.link)
-    res.send('abcdef')
+    try {
+        Image.create({ name: req.body.name, link: req.body.link }, function (err) {
+            if (err) return handleError(err);
+            // saved!
+        });
+        res.send('Image Sent')
+    } catch (error) {
+        //console.log(error)
+        res.send('Image failed to send')
+    }
+    
+    
 })
 
 app.post('/images/remove/:id', (req,res) => {
-    console.log(req.params.id)
-    Image.deleteOne({_id: req.params.id}, function(err){
-        if (err) console.log(err)
-    })
-    res.send('asd')
+    try {
+
+        Image.deleteOne({_id: req.params.id}, function(err){
+            if (err) console.log(err)
+        })
+        res.send('Image deleted')
+        
+    } catch (error) {
+        //console.log(error)
+        res.send('Image failed to delete')
+    }
+
+    
 })
 
 app.listen(PORT, () => {
