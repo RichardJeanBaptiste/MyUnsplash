@@ -35,7 +35,7 @@ app.get('/images', (req,res) => {
         Image.find({}, function(err, docs){
             if (err) res.send(err)
             console.log(docs)
-            res.json(docs)
+            res.send(docs)
         })
     } catch (error) {
         console.log(error)

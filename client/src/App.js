@@ -31,13 +31,19 @@ function App(props) {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    fetch('https://richinbkunsplash.herokuapp.com/images')
+    fetch('https://richinbkunsplash.herokuapp.com/images', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
     .then((response) => {
-      //console.log(response)
+      console.log('def')
+      console.log(response)
       return response.json()
     })
     .then(data => {
-      console.log(data)
+      console.log('abc')
       setImageList(data.reverse())
     })
 
