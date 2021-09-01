@@ -50,7 +50,7 @@ app.post('/images/add', (req,res) => {
         });
         res.send('Image Sent')
     } catch (error) {
-        //console.log(error)
+        console.log(error)
         res.send('Image failed to send')
     }
     
@@ -59,7 +59,6 @@ app.post('/images/add', (req,res) => {
 
 app.post('/images/remove/:id', (req,res) => {
     try {
-
         Image.deleteOne({_id: req.params.id}, function(err){
             if (err) console.log(err)
         })
