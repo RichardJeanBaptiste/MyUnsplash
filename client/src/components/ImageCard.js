@@ -7,6 +7,7 @@ function ImageCard(props) {
 
     const [showOverlay, setShowOverlay] = useState(false)
 
+    /*
     const [imageStyle] = useState({
         position: 'absolute',
         top: props.imgTop,
@@ -18,8 +19,27 @@ function ImageCard(props) {
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
     })
+    */
+
+    function checkUrl() {
+        if(props.ImageUrl === '' || props.ImageUrl === undefined){
+            return ""
+        }else{
+            return props.ImgUrl 
+        }
+    }
     
-    
+    const imageStyle = {
+        position: 'absolute',
+        top: props.imgTop,
+        left: props.imgLeft,
+        width: props.imgWidth,
+        height: props.imgHeight,
+        borderRadius: '16px',
+        backgroundImage: `url(${checkUrl()})`,
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+    }
    
     const [buttonStyle] = useState({
         fontFamily: 'Montserrat',

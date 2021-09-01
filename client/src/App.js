@@ -31,19 +31,13 @@ function App(props) {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    fetch('https://richinbkunsplash.herokuapp.com/images', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
+    fetch('https://richinbkunsplash.herokuapp.com/images')
     .then((response) => {
-      console.log(response)
-      console.log(JSON.stringify(response))
-      return JSON.stringify(response)
+      //console.log(response.json())
+      return response.json()
     })
     .then(data => {
-      data = Array.from(data)
+      console.log(data)
       setImageList(data.reverse())
     })
 
@@ -120,23 +114,24 @@ function App(props) {
     }else{
 
       let count = 0;
-      let x = imageList.map((data) => {
+      let x = imageList.map((data, i) => {
+
         count++;
         if(count === 1){
           
-          return (<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='20%'/>)
+          return (<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='20%'/>)
         }else if(count === 2){
-          return (<ImageCard ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='65%'/>)
+          return (<ImageCard key={i} ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='65%'/>)
         }else if(count === 3){
-          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='110%'/>)
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='110%'/>)
         }else if(count === 4){
-          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='30em' imgTop='20%' imgLeft='38%'/>)
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='30em' imgTop='20%' imgLeft='38%'/>)
         }else if(count === 5){
-          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='13em'  imgTop='113%' imgLeft='38%'/>)
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='13em'  imgTop='113%' imgLeft='38%'/>)
         }else if(count === 6){
-          return(<ImageCard ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='16em' imgTop='20%' imgLeft='75%'/>)
+          return(<ImageCard key={i} ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='16em' imgTop='20%' imgLeft='75%'/>)
         }else if(count === 7){
-          return(<ImageCard ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='27em' imgTop='70%' imgLeft='75%'/>)
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='27em' imgTop='70%' imgLeft='75%'/>)
         }
         return <></>
       })

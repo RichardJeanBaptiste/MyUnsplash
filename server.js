@@ -30,11 +30,11 @@ app.get('/hello', (req, res) => {
     res.send('Hello from the server')
 })
 
-app.get('/images', (req,res) => {
+app.get('/images', async (req,res) => {
     try {
         
         console.log("--- IMages route----")
-        Image.find({}, function(err, docs){
+        await Image.find({}, function(err, docs){
             if (err) res.send(err)
             console.log(docs)
             res.json(docs)
