@@ -1,5 +1,6 @@
 const express= require('express')
 const cors = require('cors')
+const path = require('path')
 const mongoose = require('mongoose')
 const { Image } = require('./images.models')
 const app = express()
@@ -7,6 +8,7 @@ const PORT = 4000
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'client/build')))
 
 
 try {
@@ -19,8 +21,8 @@ try {
 }
 
 
-app.get('/', (req,res) => {
-    res.send('hello world!')
+app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname + 'client/build/index.html'))
 })
 
 app.get('/hello', (req, res) => {
@@ -37,6 +39,17 @@ app.get('/images', (req,res) => {
     } catch (error) {
         console.log(error)
     }
+})
+
+app.post('/images/add', (req,res) => {
+
+    Image.create({ name: req.body.name, link: req.body.link }, function (err) {
+        if (err) return handleError(err);
+        // saved!
+    });
+    //console.log(req.body.name)
+    //console.log(req.body.link)
+    res.send('abcdef')
 })
 
 app.post('/images/remove/:id', (req,res) => {

@@ -11,7 +11,7 @@ import './App.css';
 import { React, useState, useEffect } from 'react';
 import logo from './images/my_unsplash_logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { alertHeading, alertStyle, alertButtons, formStyle, formInputStyle } from './AppStyles';
+import { alertHeading, alertStyle, alertButtons, formStyle, formInputStyle, } from './AppStyles';
 import ImageCard from './components/ImageCard';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -24,13 +24,17 @@ function App(props) {
 
   const [imageList, setImageList] = useState(null);
 
+  const [label, setLabel] = useState("");
+
+  const [linkToSend, setLinkToSend] = useState("");
+
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
     fetch('/images')
     .then(response => response.json())
     .then(data => {
-      setImageList(data)
+      setImageList(data.reverse())
     })
     .catch((err) => {
       console.log(err)
@@ -43,7 +47,7 @@ function App(props) {
       fetch('/images')
       .then(response => response.json())
       .then(data => {
-        setImageList(data)
+        setImageList(data.reverse())
       })
       .catch((err) => {
         console.log(err)
@@ -53,15 +57,6 @@ function App(props) {
 
   },[imageList, reload, setReload])
 
-
-  function removeImage(id) {
-    fetch(`/images/remove/${id}`, {
-        method: 'POST',
-    })
-
-    setReload(true)
-  }  
- 
 
   const appStyle = () => {
 
@@ -78,6 +73,36 @@ function App(props) {
 
     return opac;
   }
+
+  function handleLabelChange(e){
+      setLabel(e.target.value);
+  }
+
+  function handleLinkChange(e){
+      setLinkToSend(e.target.value)
+  }
+
+  function removeImage(id) {
+    fetch(`/images/remove/${id}`, {
+        method: 'POST',
+    })
+
+    setReload(true)
+  }  
+
+  function addImage(){
+    const data = { name: label, link: linkToSend}
+    fetch(`/images/add`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    setShow(false)
+    setReload(true)
+  }
+ 
 
   const ImageContainer = () => {
     if(imageList === null){
@@ -121,11 +146,11 @@ function App(props) {
                 <Form.Group>
                   <div>
                       <Form.Label style={{marginLeft: '-90%'}}>Label</Form.Label>
-                      <Form.Control style={formInputStyle} type="text" placeholder="Suspendisse elit massa"/>
+                      <Form.Control style={formInputStyle} type="text" placeholder="Suspendisse elit massa" onChange={handleLabelChange}/>
                   </div>
                   <div style={{marginTop: '5%'}}>
                       <Form.Label style={{marginLeft: '-83%'}}>Photo URL</Form.Label>
-                      <Form.Control  style={formInputStyle} type="text" placeholder="https://images.unsplash.com/photo-1584395630827-860eee694d7b?ixlib=r..."/>
+                      <Form.Control  style={formInputStyle} type="text" onChange={handleLinkChange} placeholder="https://images.unsplash.com/photo-1584395630827-860eee694d7b?ixlib=r..."/>
                   </div>
                   
                 </Form.Group>
@@ -136,7 +161,7 @@ function App(props) {
                 <Button onClick={() => setShow(false)} variant="light" style={{marginRight: '11%', backgroundColor: 'transparent'}}>
                     Cancel
                 </Button>
-                <Button onClick={() => setShow(false)} variant="success" style={{borderRadius: '12px'}}>
+                <Button onClick={addImage} variant="success" style={{borderRadius: '12px'}}>
                     Submit
                 </Button>
               </div>

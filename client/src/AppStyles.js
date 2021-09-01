@@ -33,4 +33,7 @@ const alertHeading = {
     borderRadius: '12px',
   }
 
+
+  
+
   module.exports = { alertStyle, alertHeading, alertButtons, formStyle, formInputStyle};
