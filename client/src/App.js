@@ -44,6 +44,7 @@ function App(props) {
     })
     .then(data => {
       console.log('abc')
+      data = Array.from(data)
       setImageList(data.reverse())
     })
 
@@ -52,8 +53,9 @@ function App(props) {
   useEffect(() => {
     if(reload === true){
       fetch('https://richinbkunsplash.herokuapp.com/images')
-      .then(response => response.json())
+      .then(response => JSON.stringify(response))
       .then(data => {
+        data = Array.from(data)
         setImageList(data.reverse())
       })
       .catch((err) => {
