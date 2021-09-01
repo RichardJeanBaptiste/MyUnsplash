@@ -24,8 +24,6 @@ function App(props) {
 
   const [imageList, setImageList] = useState(null);
 
-  const [ready, setReady] = useState(false);
-
   const [label, setLabel] = useState("");
 
   const [linkToSend, setLinkToSend] = useState("");
@@ -41,7 +39,6 @@ function App(props) {
     .then(data => {
       console.log(data)
       setImageList(data.reverse())
-      setReady(true);
     })
 
   },[])
@@ -56,7 +53,7 @@ function App(props) {
     .then(data => {
       console.log(data)
       setImageList(data.reverse())
-      setReady(true);
+      setReload(false);
     })
     }
 
@@ -115,7 +112,7 @@ function App(props) {
         <>
         </>
       )
-    }else if(ready === true){
+    }else{
 
       let count = 0;
       let x = imageList.map((data, i) => {
@@ -142,8 +139,6 @@ function App(props) {
 
       return(x)
     }
-
-    return <></>
   }
 
   return (
