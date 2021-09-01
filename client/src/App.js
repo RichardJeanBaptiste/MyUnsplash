@@ -31,7 +31,7 @@ function App(props) {
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
-    fetch('/images')
+    fetch('https://richinbkunsplash.herokuapp.com/images')
     .then(response => response.json())
     .then(data => {
       setImageList(data.reverse())
