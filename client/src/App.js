@@ -40,7 +40,7 @@ function App(props) {
     .then((response) => {
       console.log('def')
       console.log(response)
-      return response.json()
+      return JSON.stringify(response)
     })
     .then(data => {
       console.log('abc')
