@@ -30,14 +30,16 @@ function App(props) {
 
   const [reload, setReload] = useState(false);
 
+  const [isFiltering, setIsFiltering] = useState(false);
+
+  const [filterParam, setFilterParam] = useState("");
+
   useEffect(() => {
     fetch('https://richinbkunsplash.herokuapp.com/images')
     .then((response) => {
-      //console.log(response.json())
       return response.json()
     })
     .then(data => {
-      console.log(data)
       setImageList(data.reverse())
     })
 
@@ -47,11 +49,9 @@ function App(props) {
     if(reload === true){
       fetch('https://richinbkunsplash.herokuapp.com/images')
     .then((response) => {
-      //console.log(response.json())
       return response.json()
     })
     .then(data => {
-      console.log(data)
       setImageList(data.reverse())
       setReload(false);
     })
@@ -104,7 +104,16 @@ function App(props) {
     setShow(false)
     setReload(true)
   }
- 
+
+  function handleFilter(e) {
+      if(e.target.value === ""){
+        setIsFiltering(false);
+      }else{
+        setFilterParam(e.target.value);
+        setIsFiltering(true);
+      }
+  }
+
 
   const ImageContainer = () => {
     if(imageList === null){
@@ -112,6 +121,37 @@ function App(props) {
         <>
         </>
       )
+    }else if(isFiltering === true){
+      
+      let count = 0;
+      
+      let filteredList = imageList.filter((item) => {return item.name.indexOf(filterParam) !== -1})
+
+      filteredList = filteredList.map((data, i) => {
+
+        count++;
+
+        if(count === 1){
+          return (<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='20%'/>)
+        }else if(count === 2){
+          return (<ImageCard key={i} ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='65%'/>)
+        }else if(count === 3){
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='14em' imgTop='110%'/>)
+        }else if(count === 4){
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='30em' imgTop='20%' imgLeft='38%'/>)
+        }else if(count === 5){
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='22em' imgHeight='13em'  imgTop='113%' imgLeft='38%'/>)
+        }else if(count === 6){
+          return(<ImageCard key={i} ImageUrl={data.link}  label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='16em' imgTop='20%' imgLeft='75%'/>)
+        }else if(count === 7){
+          return(<ImageCard key={i} ImageUrl={data.link} label={data.name} removeImageHandler={() => removeImage(data._id)} imgWidth='18em' imgHeight='27em' imgTop='70%' imgLeft='75%'/>)
+        }
+        return <></>
+      })
+
+      return(filteredList)
+
+      
     }else{
 
       let count = 0;
@@ -173,7 +213,7 @@ function App(props) {
         <div className='container' style={appStyle()}>
             <div className="AppBar">
                 <img  className="AppLogo" src={logo} alt='unsplash logo' width='14%' height='9%'/>
-                <input className="SearchBar" type="text" placeholder='Search by name'/>
+                <input className="SearchBar" type="text" placeholder='Search by name' onChange={handleFilter}/>
                 <button className="AddButton" onClick={() => setShow(true)}>Add a photo</button>
             </div>
 
