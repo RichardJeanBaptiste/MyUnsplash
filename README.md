@@ -10,5 +10,4 @@ Challenge: Create my Unsplash app. Use Front-end libraries like React or Vue. Cr
     User story: I can search for photos by label
     User story: When I hover a photo, I can see a label and a delete button
     User story: I can delete images
-    User story (optional): When I delete an image, I can enter my password
 
